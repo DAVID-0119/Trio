@@ -273,7 +273,12 @@ jobs:
 
       # Update entitlement background sound
       - name: Update entitlement background sound
-        run: sed -i -e 's/<string>bluetooth-central<\/string>/<string>bluetooth-central<\/string><string>audio<\/string>/g' Trio/Info.plist
+        run: |
+          if [ -f Trio/Info.plist ]; then
+           sed -i -e 's/<string>bluetooth-central<\/string>/<string>bluetooth-central<\/string><string>audio<\/string>/g' Trio/Info.plist
+          else
+           echo "Info.plist not found. Skipping audio entitlement patch."
+          fi
 
       - name: Fastlane Build & Archive
         run: bundle exec fastlane build_trio
